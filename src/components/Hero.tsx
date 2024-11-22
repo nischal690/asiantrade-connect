@@ -23,13 +23,13 @@ const Hero = () => {
         <source src="/hero-video.mp4" type="video/mp4" />
       </video>
       
-      <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent backdrop-blur-[2px]" />
+      <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-secondary/40 backdrop-blur-[2px]" />
       
       <div className="relative h-full flex items-center justify-start px-8 sm:px-12 lg:px-24">
         <div className="max-w-3xl space-y-8 animate-fade-up">
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight text-white drop-shadow-lg">
             Connecting Asia's
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent to-secondary-light">
               {" "}Trade Future
             </span>
           </h1>
@@ -37,7 +37,7 @@ const Hero = () => {
             Building bridges between Asian markets and global opportunities through innovative solutions and strategic partnerships.
           </p>
           <div className="flex gap-6">
-            <button className="group px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full font-medium flex items-center gap-2 hover:bg-white hover:text-primary transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+            <button className="group px-8 py-4 bg-secondary hover:bg-secondary-light text-white rounded-full font-medium flex items-center gap-2 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
               Discover More
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>

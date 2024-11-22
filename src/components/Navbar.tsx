@@ -6,7 +6,7 @@ const NavLink = ({ to, children, onClick }: { to: string; children: React.ReactN
   <Link
     to={to}
     onClick={onClick}
-    className="relative px-3 py-2 text-sm font-medium text-white/90 hover:text-white transition-colors after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-0.5 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+    className="relative px-3 py-2 text-sm font-medium text-white/90 hover:text-white transition-colors after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-0.5 after:bg-accent after:transition-all after:duration-300 hover:after:w-full"
   >
     {children}
   </Link>
@@ -28,7 +28,7 @@ const Navbar = () => {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "backdrop-blur-md bg-black/20 border-b border-white/10 py-4"
+          ? "backdrop-blur-md bg-primary/20 border-b border-white/10 py-4"
           : "bg-transparent py-6"
       }`}
     >
@@ -59,7 +59,7 @@ const Navbar = () => {
       </div>
 
       {isMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 backdrop-blur-md bg-black/50 py-4 animate-fade-in border-t border-white/10">
+        <div className="md:hidden absolute top-full left-0 right-0 backdrop-blur-md bg-primary/50 py-4 animate-fade-in border-t border-white/10">
           <div className="flex flex-col space-y-4 px-6">
             <NavLink to="/" onClick={() => setIsMenuOpen(false)}>
               Home
