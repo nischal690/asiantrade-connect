@@ -3,25 +3,41 @@ import { ArrowRight } from "lucide-react";
 
 const Hero = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.playbackRate = 0.7;
     }
+
+    const handleScroll = () => {
+      if (containerRef.current) {
+        const scrolled = window.scrollY;
+        const scale = 1 + scrolled * 0.0005; // Subtle scale effect
+        const translateY = scrolled * 0.5; // Parallax effect
+        containerRef.current.style.transform = `scale(${Math.min(scale, 1.15)}) translateY(${translateY}px)`;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
-      <video
-        ref={videoRef}
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover scale-105 transform"
-      >
-        <source src="/hero-video.mp4" type="video/mp4" />
-      </video>
+      <div ref={containerRef} className="absolute inset-0 w-full h-full transform transition-transform duration-300">
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover scale-105"
+        >
+          <source src="https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-city-traffic-at-night-9161-large.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
       
       <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-secondary/60 backdrop-blur-[2px]" />
       
