@@ -72,11 +72,23 @@ export default {
             transform: "scale(1)",
           },
         },
+        "slide-in": {
+          "0%": {
+            transform: "translateX(-100%)",
+          },
+          "100%": {
+            transform: "translateX(0)",
+          },
+        },
       },
       animation: {
         "fade-up": "fade-up 0.5s ease-out",
         "fade-in": "fade-in 0.3s ease-out",
         "scale-up": "scale-up 0.3s ease-out",
+        "slide-in": "slide-in 0.5s ease-out",
+      },
+      backdropBlur: {
+        xs: "2px",
       },
     },
   },

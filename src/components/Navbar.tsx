@@ -2,6 +2,16 @@ import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 
+const NavLink = ({ to, children, onClick }: { to: string; children: React.ReactNode; onClick?: () => void }) => (
+  <Link
+    to={to}
+    onClick={onClick}
+    className="relative px-3 py-2 text-sm font-medium text-white/90 hover:text-white transition-colors after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-0 after:h-0.5 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+  >
+    {children}
+  </Link>
+);
+
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,34 +27,26 @@ const Navbar = () => {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "glass-panel py-4" : "bg-transparent py-6"
+        isScrolled
+          ? "backdrop-blur-md bg-black/20 border-b border-white/10 py-4"
+          : "bg-transparent py-6"
       }`}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
-        <Link to="/" className="text-2xl font-heading font-bold">
+        <Link to="/" className="text-2xl font-heading font-bold text-white">
           ATC
         </Link>
 
         <div className="hidden md:flex items-center space-x-8">
-          <Link to="/" className="nav-link">
-            Home
-          </Link>
-          <Link to="/about" className="nav-link">
-            About Us
-          </Link>
-          <Link to="/services" className="nav-link">
-            Our Services
-          </Link>
-          <Link to="/news" className="nav-link">
-            News
-          </Link>
-          <Link to="/contact" className="nav-link">
-            Contact
-          </Link>
+          <NavLink to="/">Home</NavLink>
+          <NavLink to="/about">About Us</NavLink>
+          <NavLink to="/services">Our Services</NavLink>
+          <NavLink to="/news">News</NavLink>
+          <NavLink to="/contact">Contact</NavLink>
         </div>
 
         <button
-          className="md:hidden"
+          className="md:hidden text-white"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
         >
@@ -56,45 +58,24 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile menu */}
       {isMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 glass-panel py-4 animate-fade-in">
+        <div className="md:hidden absolute top-full left-0 right-0 backdrop-blur-md bg-black/50 py-4 animate-fade-in border-t border-white/10">
           <div className="flex flex-col space-y-4 px-6">
-            <Link
-              to="/"
-              className="nav-link"
-              onClick={() => setIsMenuOpen(false)}
-            >
+            <NavLink to="/" onClick={() => setIsMenuOpen(false)}>
               Home
-            </Link>
-            <Link
-              to="/about"
-              className="nav-link"
-              onClick={() => setIsMenuOpen(false)}
-            >
+            </NavLink>
+            <NavLink to="/about" onClick={() => setIsMenuOpen(false)}>
               About Us
-            </Link>
-            <Link
-              to="/services"
-              className="nav-link"
-              onClick={() => setIsMenuOpen(false)}
-            >
+            </NavLink>
+            <NavLink to="/services" onClick={() => setIsMenuOpen(false)}>
               Our Services
-            </Link>
-            <Link
-              to="/news"
-              className="nav-link"
-              onClick={() => setIsMenuOpen(false)}
-            >
+            </NavLink>
+            <NavLink to="/news" onClick={() => setIsMenuOpen(false)}>
               News
-            </Link>
-            <Link
-              to="/contact"
-              className="nav-link"
-              onClick={() => setIsMenuOpen(false)}
-            >
+            </NavLink>
+            <NavLink to="/contact" onClick={() => setIsMenuOpen(false)}>
               Contact
-            </Link>
+            </NavLink>
           </div>
         </div>
       )}
