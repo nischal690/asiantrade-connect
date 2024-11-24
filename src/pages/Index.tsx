@@ -4,6 +4,7 @@ import Pioneers from "@/components/Pioneers";
 import About from "@/components/About";
 import Services from "@/components/Services";
 import NewsSection from "@/components/NewsSection";
+import Careers from "@/components/Careers";
 
 const Index = () => {
   return (
@@ -14,6 +15,7 @@ const Index = () => {
       <About />
       <Services />
       <NewsSection />
+      <Careers />
     </main>
   );
 };
