@@ -63,8 +63,18 @@ const Services = () => {
   return (
     <section className="py-32 relative overflow-hidden">
       {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-b from-background via-muted to-background opacity-50" />
-      <div className="absolute inset-0 bg-[url('/placeholder.svg')] opacity-5" />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.5 }}
+        transition={{ duration: 1 }}
+        className="absolute inset-0 bg-gradient-to-b from-background via-muted to-background"
+      />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.05 }}
+        transition={{ duration: 1, delay: 0.5 }}
+        className="absolute inset-0 bg-[url('/placeholder.svg')]"
+      />
       
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-6xl mx-auto">
