@@ -1,20 +1,4 @@
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Sphere } from '@react-three/drei';
 import { motion } from 'framer-motion';
-import * as THREE from 'three';
-
-const Earth = () => {
-  return (
-    <Sphere args={[1, 32, 32]}>
-      <meshStandardMaterial 
-        color="#1E88E5"
-        metalness={0.4}
-        roughness={0.7}
-        emissive="#000"
-      />
-    </Sphere>
-  );
-};
 
 const Network = () => {
   return (
@@ -41,23 +25,11 @@ const Network = () => {
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
-            className="h-[400px] relative"
+            className="h-[400px] relative bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg shadow-xl"
           >
-            <Canvas
-              camera={{ position: [0, 0, 3] }}
-              gl={{ antialias: true }}
-              dpr={[1, 2]}
-            >
-              <ambientLight intensity={0.5} />
-              <pointLight position={[10, 10, 10]} intensity={1.5} />
-              <Earth />
-              <OrbitControls
-                enableZoom={false}
-                autoRotate
-                autoRotateSpeed={1}
-                enablePan={false}
-              />
-            </Canvas>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-48 h-48 rounded-full bg-gradient-to-br from-primary to-secondary animate-pulse" />
+            </div>
           </motion.div>
         </div>
       </div>
