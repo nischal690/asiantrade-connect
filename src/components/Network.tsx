@@ -1,15 +1,16 @@
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Sphere } from '@react-three/drei';
 import { motion } from 'framer-motion';
+import * as THREE from 'three';
 
 const Earth = () => {
   return (
     <Sphere args={[1, 32, 32]}>
-      <meshPhongMaterial 
+      <meshStandardMaterial 
         color="#1E88E5"
+        metalness={0.4}
+        roughness={0.7}
         emissive="#000"
-        specular="#111"
-        shininess={30}
       />
     </Sphere>
   );
@@ -42,14 +43,19 @@ const Network = () => {
             transition={{ duration: 0.8 }}
             className="h-[400px] relative"
           >
-            <Canvas camera={{ position: [0, 0, 3] }}>
+            <Canvas
+              camera={{ position: [0, 0, 3] }}
+              gl={{ antialias: true }}
+              dpr={[1, 2]}
+            >
               <ambientLight intensity={0.5} />
-              <pointLight position={[10, 10, 10]} />
+              <pointLight position={[10, 10, 10]} intensity={1.5} />
               <Earth />
               <OrbitControls
                 enableZoom={false}
                 autoRotate
                 autoRotateSpeed={1}
+                enablePan={false}
               />
             </Canvas>
           </motion.div>
