@@ -44,7 +44,7 @@ const Hero = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
-        className="absolute inset-0 bg-gradient-to-r from-primary/90 to-secondary/60 backdrop-blur-[2px]" 
+        className="absolute inset-0 bg-gradient-to-r from-primary/90 via-secondary/70 to-accent/50 backdrop-blur-[2px]" 
       />
       
       <div className="relative h-full flex items-center justify-start px-8 sm:px-12 lg:px-24">
@@ -56,7 +56,7 @@ const Hero = () => {
         >
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight text-primary-foreground drop-shadow-lg">
             Connecting Asia's
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent to-secondary-dark">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-accent via-secondary-dark to-primary-dark">
               {" "}Trade Future
             </span>
           </h1>
@@ -69,13 +69,22 @@ const Hero = () => {
             transition={{ duration: 0.6, delay: 1 }}
             className="flex gap-6"
           >
-            <button className="group px-8 py-4 bg-secondary hover:bg-secondary-light text-primary-foreground rounded-full font-medium flex items-center gap-2 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+            <button className="group px-8 py-4 bg-accent hover:bg-accent/90 text-accent-foreground rounded-full font-medium flex items-center gap-2 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
               Discover More
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
           </motion.div>
         </motion.div>
       </div>
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2, duration: 0.8 }}
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+      >
+        <div className="animate-bounce w-6 h-6 border-2 border-white border-t-0 border-l-0 transform rotate-45" />
+      </motion.div>
     </div>
   );
 };

@@ -7,20 +7,29 @@ import NewsSection from "@/components/NewsSection";
 import Network from "@/components/Network";
 import Careers from "@/components/Careers";
 import Footer from "@/components/Footer";
+import { motion } from "framer-motion";
 
 const Index = () => {
   return (
-    <main className="min-h-screen">
+    <motion.main 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-screen bg-gradient-to-b from-background to-muted"
+    >
       <Navbar />
       <Hero />
-      <Pioneers />
-      <About />
-      <Services />
-      <NewsSection />
-      <Network />
-      <Careers />
+      <div className="relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-secondary/5 pointer-events-none" />
+        <Pioneers />
+        <About />
+        <Services />
+        <NewsSection />
+        <Network />
+        <Careers />
+      </div>
       <Footer />
-    </main>
+    </motion.main>
   );
 };
 
