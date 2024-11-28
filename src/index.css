@@ -32,11 +32,11 @@
   }
 
   .nav-link {
-    @apply relative px-3 py-2 text-sm font-medium transition-colors hover:text-primary;
+    @apply relative px-3 py-2 text-sm font-medium transition-colors hover:text-primary-dark;
   }
 
   .nav-link::after {
-    @apply content-[''] absolute left-0 bottom-0 w-0 h-0.5 bg-primary transition-all duration-300;
+    @apply content-[''] absolute left-0 bottom-0 w-0 h-0.5 bg-primary-dark transition-all duration-300;
   }
 
   .nav-link:hover::after {
