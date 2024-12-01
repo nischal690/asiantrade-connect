@@ -7,11 +7,11 @@ const NavLink = ({ to, children, onClick }: { to: string; children: React.ReactN
   <Link
     to={to}
     onClick={onClick}
-    className="relative group px-4 py-2 text-sm font-medium text-white/90 hover:text-white transition-all duration-300"
+    className="relative group px-4 py-2 text-sm font-medium text-black/90 hover:text-black transition-all duration-300"
   >
     <span className="relative z-10">{children}</span>
     <motion.div
-      className="absolute inset-0 bg-gradient-to-r from-white/20 to-white/5 rounded-lg -z-0"
+      className="absolute inset-0 bg-gradient-to-r from-black/5 to-black/2 rounded-lg -z-0"
       initial={{ scale: 0, opacity: 0 }}
       whileHover={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
@@ -44,7 +44,7 @@ const Navbar = () => {
       transition={{ duration: 0.8, type: "spring", bounce: 0.2 }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled
-          ? "backdrop-blur-xl bg-black/30 shadow-lg border-b border-white/10 py-4"
+          ? "backdrop-blur-xl bg-white/80 shadow-lg border-b border-black/5 py-4"
           : "bg-transparent py-6"
       }`}
     >
@@ -55,7 +55,7 @@ const Navbar = () => {
             className="relative group"
           >
             <motion.span 
-              className="text-2xl font-heading font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80"
+              className="text-2xl font-heading font-bold bg-clip-text text-transparent bg-gradient-to-r from-black to-black/80"
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
@@ -78,9 +78,9 @@ const Navbar = () => {
           </div>
 
           <motion.button
-            className="md:hidden relative z-50 w-10 h-10 flex items-center justify-center rounded-lg bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-lg border border-white/20"
+            className="md:hidden relative z-50 w-10 h-10 flex items-center justify-center rounded-lg bg-gradient-to-br from-black/10 to-black/5 backdrop-blur-lg border border-black/10"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.15)" }}
+            whileHover={{ scale: 1.05, backgroundColor: "rgba(0,0,0,0.1)" }}
             whileTap={{ scale: 0.95 }}
             aria-label="Toggle menu"
           >
@@ -93,7 +93,7 @@ const Navbar = () => {
                   exit={{ rotate: 90, opacity: 0 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
                 >
-                  <X className="h-6 w-6 text-white" />
+                  <X className="h-6 w-6 text-black" />
                 </motion.div>
               ) : (
                 <motion.div
@@ -103,7 +103,7 @@ const Navbar = () => {
                   exit={{ rotate: -90, opacity: 0 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
                 >
-                  <Menu className="h-6 w-6 text-white" />
+                  <Menu className="h-6 w-6 text-black" />
                 </motion.div>
               )}
             </AnimatePresence>
@@ -118,7 +118,7 @@ const Navbar = () => {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="md:hidden absolute top-full left-0 right-0 backdrop-blur-xl bg-gradient-to-b from-black/60 to-black/40 border-t border-white/10 shadow-lg"
+            className="md:hidden absolute top-full left-0 right-0 backdrop-blur-xl bg-white/90 border-t border-black/5 shadow-lg"
           >
             <div className="flex flex-col space-y-4 p-6">
               <NavLink to="/" onClick={() => setIsMenuOpen(false)}>
