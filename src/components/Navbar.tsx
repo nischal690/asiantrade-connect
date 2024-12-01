@@ -7,13 +7,19 @@ const NavLink = ({ to, children, onClick }: { to: string; children: React.ReactN
   <Link
     to={to}
     onClick={onClick}
-    className="relative group px-4 py-2 text-sm font-medium text-primary-foreground/90 hover:text-primary-foreground transition-colors"
+    className="relative group px-4 py-2 text-sm font-medium text-white/90 hover:text-white transition-colors duration-300"
   >
     <span className="relative z-10">{children}</span>
     <motion.div
-      className="absolute inset-0 bg-primary-dark/10 rounded-lg -z-0"
+      className="absolute inset-0 bg-white/10 rounded-lg -z-0"
       initial={{ scale: 0, opacity: 0 }}
       whileHover={{ scale: 1, opacity: 1 }}
+      transition={{ duration: 0.2 }}
+    />
+    <motion.div
+      className="absolute bottom-0 left-0 h-0.5 bg-accent"
+      initial={{ width: 0 }}
+      whileHover={{ width: "100%" }}
       transition={{ duration: 0.2 }}
     />
   </Link>
@@ -36,9 +42,9 @@ const Navbar = () => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, type: "spring" }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled
-          ? "backdrop-blur-md bg-primary/90 shadow-lg border-b border-primary-dark/10 py-4"
+          ? "backdrop-blur-md bg-black/40 shadow-lg border-b border-white/10 py-4"
           : "bg-transparent py-6"
       }`}
     >
@@ -49,7 +55,7 @@ const Navbar = () => {
             className="relative group"
           >
             <motion.span 
-              className="text-2xl font-heading font-bold text-primary-foreground"
+              className="text-2xl font-heading font-bold text-white"
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             >
@@ -72,7 +78,7 @@ const Navbar = () => {
           </div>
 
           <motion.button
-            className="md:hidden relative z-50 w-10 h-10 flex items-center justify-center rounded-lg bg-primary-dark/10 text-primary-foreground"
+            className="md:hidden relative z-50 w-10 h-10 flex items-center justify-center rounded-lg bg-white/10 text-white backdrop-blur-sm border border-white/20"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -108,13 +114,13 @@ const Navbar = () => {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden absolute top-full left-0 right-0 backdrop-blur-md bg-primary/95 py-6 border-t border-primary-dark/10 shadow-lg"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden absolute top-full left-0 right-0 backdrop-blur-md bg-black/60 border-t border-white/10 shadow-lg"
           >
-            <div className="flex flex-col space-y-2 px-6">
+            <div className="flex flex-col space-y-4 p-6">
               <NavLink to="/" onClick={() => setIsMenuOpen(false)}>
                 Home
               </NavLink>
