@@ -7,6 +7,7 @@ import NewsSection from "@/components/NewsSection";
 import Network from "@/components/Network";
 import Careers from "@/components/Careers";
 import Footer from "@/components/Footer";
+import BrandGrowth from "@/components/BrandGrowth";
 import { motion } from "framer-motion";
 import { Play } from "lucide-react";
 
@@ -68,6 +69,7 @@ const Index = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-secondary/5 pointer-events-none" />
         <Pioneers />
         <About />
+        <BrandGrowth />
         <Services />
         <NewsSection />
         <Network />
