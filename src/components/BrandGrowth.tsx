@@ -96,6 +96,11 @@ const BrandGrowth = () => {
               opts={{
                 align: "start",
                 loop: true,
+                autoplay: {
+                  delay: 3000, // Auto-scroll every 3 seconds
+                  stopOnLastSlide: false,
+                  disableOnInteraction: false
+                }
               }}
               className="w-full"
             >
