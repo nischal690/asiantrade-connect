@@ -3,18 +3,33 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { MapPin, Phone, Mail, ArrowRight } from "lucide-react";
+import { MapPin, Phone, Mail, ArrowRight, CheckCircle2 } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import { useState } from "react";
 
 const ContactPage = () => {
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Simulate form submission
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
     toast({
-      title: "Message sent!",
-      description: "We'll get back to you soon.",
+      title: (
+        <div className="flex items-center gap-2">
+          <CheckCircle2 className="h-5 w-5 text-green-500" />
+          <span>Message sent successfully!</span>
+        </div>
+      ),
+      description: "Thank you for reaching out. We'll get back to you soon.",
+      className: "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
     });
+    
+    setIsSubmitting(false);
   };
 
   return (
@@ -72,9 +87,22 @@ const ContactPage = () => {
                     className="min-h-[150px] bg-white/50 border-white/20 backdrop-blur-sm"
                   />
                 </div>
-                <Button type="submit" className="w-full group">
-                  Send Message
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                <Button 
+                  type="submit" 
+                  className="w-full group relative overflow-hidden"
+                  disabled={isSubmitting}
+                >
+                  <motion.div
+                    animate={isSubmitting ? { x: "100%" } : { x: "0%" }}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                    className="absolute inset-0 bg-gradient-to-r from-primary via-secondary to-accent"
+                  />
+                  <span className="relative">
+                    {isSubmitting ? "Sending..." : "Send Message"}
+                  </span>
+                  {!isSubmitting && (
+                    <ArrowRight className="relative ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  )}
                 </Button>
               </form>
             </motion.div>
