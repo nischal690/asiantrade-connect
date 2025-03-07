@@ -1,51 +1,120 @@
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown, Search, Globe } from "lucide-react";
 import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useMotionValueEvent, useScroll } from "framer-motion";
 
-const NavLink = ({ to, children, onClick }: { to: string; children: React.ReactNode; onClick?: () => void }) => (
-  <Link
-    to={to}
-    onClick={onClick}
-    className="relative group px-4 py-2 text-sm font-medium text-black/90 hover:text-black transition-all duration-300"
-  >
-    <span className="relative z-10">{children}</span>
-    <motion.div
-      className="absolute inset-0 bg-gradient-to-r from-black/5 to-black/2 rounded-lg -z-0"
-      initial={{ scale: 0, opacity: 0 }}
-      whileHover={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
-    />
-    <motion.div
-      className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-accent via-accent/80 to-accent/50"
-      initial={{ width: "0%", opacity: 0 }}
-      whileHover={{ width: "100%", opacity: 1 }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
-    />
-  </Link>
-);
+const NavLink = ({ to, children, hasDropdown = false, onClick }: { 
+  to: string; 
+  children: React.ReactNode; 
+  hasDropdown?: boolean;
+  onClick?: () => void 
+}) => {
+  const [isHovered, setIsHovered] = useState(false);
+  
+  return (
+    <div 
+      className="relative group"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <Link
+        to={to}
+        onClick={onClick}
+        className="relative flex items-center px-4 py-2 text-sm font-medium text-black/90 hover:text-black transition-all duration-300"
+      >
+        <motion.span 
+          className="relative z-10"
+          animate={{ y: isHovered ? -2 : 0 }}
+          transition={{ type: "spring", stiffness: 300 }}
+        >
+          {children}
+        </motion.span>
+        
+        {hasDropdown && (
+          <motion.div
+            animate={{ rotate: isHovered ? 180 : 0 }}
+            transition={{ duration: 0.3 }}
+            className="ml-1"
+          >
+            <ChevronDown size={14} />
+          </motion.div>
+        )}
+        
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-blue-500/5 rounded-lg -z-0"
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: isHovered ? 1 : 0, opacity: isHovered ? 1 : 0 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+        />
+        
+        <motion.div
+          className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-purple-500 via-indigo-400 to-blue-500"
+          initial={{ width: "0%", opacity: 0 }}
+          animate={{ 
+            width: isHovered ? "100%" : "0%", 
+            opacity: isHovered ? 1 : 0 
+          }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+        />
+      </Link>
+    </div>
+  );
+};
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
+  const { scrollY } = useScroll();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setIsScrolled(latest > 20);
+  });
+
+  const navVariants = {
+    visible: { 
+      y: 0,
+      transition: { 
+        type: "spring", 
+        stiffness: 100, 
+        damping: 20,
+        when: "beforeChildren",
+        staggerChildren: 0.1 
+      } 
+    },
+    hidden: { 
+      y: -100,
+      transition: { 
+        ease: "easeInOut",
+        when: "afterChildren",
+        staggerChildren: 0.05,
+        staggerDirection: -1
+      } 
+    }
+  };
+
+  const itemVariants = {
+    visible: { 
+      y: 0, 
+      opacity: 1,
+      transition: { type: "spring", stiffness: 300, damping: 20 }
+    },
+    hidden: { 
+      y: -20, 
+      opacity: 0,
+      transition: { duration: 0.2, ease: "easeInOut" }
+    }
+  };
 
   return (
     <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.8, type: "spring", bounce: 0.2 }}
+      variants={navVariants}
+      initial="hidden"
+      animate="visible"
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled
-          ? "backdrop-blur-xl bg-white/80 shadow-lg border-b border-black/5 py-4"
-          : "bg-transparent py-6"
+          ? "backdrop-blur-xl bg-white/85 shadow-lg border-b border-black/5 py-3"
+          : "bg-transparent py-5"
       }`}
     >
       <div className="container mx-auto px-6">
@@ -54,30 +123,83 @@ const Navbar = () => {
             to="/" 
             className="relative group"
           >
-            <motion.img 
-              src="/logo.png"
-              alt="AsianTrade Connect Logo"
-              className="h-32 w-auto"
+            <motion.div
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            />
+            >
+              <motion.img 
+                src="/logo.png"
+                alt="AsianTrade Connect Logo"
+                className="h-32 w-auto"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2, duration: 0.6 }}
+              />
+              <motion.div 
+                className="absolute -bottom-1 left-0 h-0.5 w-full bg-gradient-to-r from-purple-500 via-indigo-400 to-blue-500"
+                initial={{ width: 0, opacity: 0 }}
+                animate={{ width: "100%", opacity: 1 }}
+                transition={{ delay: 0.8, duration: 0.8 }}
+              />
+            </motion.div>
           </Link>
 
           <div className="hidden md:flex items-center space-x-1">
-            <NavLink to="/">Home</NavLink>
-            <NavLink to="/about">About Us</NavLink>
-            <NavLink to="/our-brands">Our Brands</NavLink>
-            <NavLink to="/services">Our Services</NavLink>
-            <NavLink to="/news">News</NavLink>
-            <NavLink to="/contact">Contact</NavLink>
+            <motion.div className="flex" variants={itemVariants}>
+              <NavLink to="/">Home</NavLink>
+            </motion.div>
+            <motion.div variants={itemVariants}>
+              <NavLink to="/about" hasDropdown>About Us</NavLink>
+            </motion.div>
+            <motion.div variants={itemVariants}>
+              <NavLink to="/our-brands">Our Brands</NavLink>
+            </motion.div>
+            <motion.div variants={itemVariants}>
+              <NavLink to="/services" hasDropdown>Our Services</NavLink>
+            </motion.div>
+            <motion.div variants={itemVariants}>
+              <NavLink to="/news">News</NavLink>
+            </motion.div>
+            <motion.div variants={itemVariants}>
+              <NavLink to="/contact">Contact</NavLink>
+            </motion.div>
+          </div>
+
+          <div className="hidden md:flex items-center space-x-4">
+            <motion.div
+              className="relative"
+              variants={itemVariants}
+              whileHover={{ scale: 1.05 }}
+            >
+              <motion.button 
+                className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-purple-500/10 to-blue-500/10 hover:from-purple-500/20 hover:to-blue-500/20 backdrop-blur-lg border border-white/20 text-black/80 transition-all duration-300"
+                whileTap={{ scale: 0.95 }}
+              >
+                <Search size={18} />
+              </motion.button>
+            </motion.div>
+            
+            <motion.div
+              className="relative"
+              variants={itemVariants}
+              whileHover={{ scale: 1.05 }}
+            >
+              <motion.button 
+                className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-purple-500/10 to-blue-500/10 hover:from-purple-500/20 hover:to-blue-500/20 backdrop-blur-lg border border-white/20 text-black/80 transition-all duration-300"
+                whileTap={{ scale: 0.95 }}
+              >
+                <Globe size={18} />
+              </motion.button>
+            </motion.div>
           </div>
 
           <motion.button
-            className="md:hidden relative z-50 w-10 h-10 flex items-center justify-center rounded-lg bg-gradient-to-br from-black/10 to-black/5 backdrop-blur-lg border border-black/10"
+            className="md:hidden relative z-50 w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-br from-purple-500/10 to-blue-500/10 backdrop-blur-lg border border-black/10"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            whileHover={{ scale: 1.05, backgroundColor: "rgba(0,0,0,0.1)" }}
+            whileHover={{ scale: 1.05, boxShadow: "0 0 8px rgba(120, 120, 255, 0.3)" }}
             whileTap={{ scale: 0.95 }}
             aria-label="Toggle menu"
+            variants={itemVariants}
           >
             <AnimatePresence mode="wait">
               {isMenuOpen ? (
@@ -109,31 +231,80 @@ const Navbar = () => {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="md:hidden absolute top-full left-0 right-0 backdrop-blur-xl bg-white/90 border-t border-black/5 shadow-lg"
+            initial={{ opacity: 0, height: 0, backdropFilter: "blur(0px)" }}
+            animate={{ 
+              opacity: 1, 
+              height: "100vh", 
+              backdropFilter: "blur(20px)"
+            }}
+            exit={{ 
+              opacity: 0, 
+              height: 0, 
+              backdropFilter: "blur(0px)",
+              transition: { 
+                height: { delay: 0.2 },
+                backdropFilter: { duration: 0.3 } 
+              }
+            }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="md:hidden fixed inset-0 top-[5rem] bg-gradient-to-b from-white/90 to-white/80 backdrop-blur-xl border-t border-black/5 shadow-2xl"
           >
-            <div className="flex flex-col space-y-4 p-6">
-              <NavLink to="/" onClick={() => setIsMenuOpen(false)}>
-                Home
-              </NavLink>
-              <NavLink to="/about" onClick={() => setIsMenuOpen(false)}>
-                About Us
-              </NavLink>
-              <NavLink to="/our-brands" onClick={() => setIsMenuOpen(false)}>
-                Our Brands
-              </NavLink>
-              <NavLink to="/services" onClick={() => setIsMenuOpen(false)}>
-                Our Services
-              </NavLink>
-              <NavLink to="/news" onClick={() => setIsMenuOpen(false)}>
-                News
-              </NavLink>
-              <NavLink to="/contact" onClick={() => setIsMenuOpen(false)}>
-                Contact
-              </NavLink>
+            <div className="flex flex-col h-full">
+              <div className="flex flex-col space-y-6 p-8">
+                {[
+                  { path: "/", name: "Home" },
+                  { path: "/about", name: "About Us" },
+                  { path: "/our-brands", name: "Our Brands" },
+                  { path: "/services", name: "Our Services" },
+                  { path: "/news", name: "News" },
+                  { path: "/contact", name: "Contact" }
+                ].map((item, i) => (
+                  <motion.div
+                    key={item.path}
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -30 }}
+                    transition={{ 
+                      delay: 0.1 + i * 0.05, 
+                      duration: 0.4,
+                      ease: [0.22, 1, 0.36, 1]
+                    }}
+                  >
+                    <Link 
+                      to={item.path} 
+                      onClick={() => setIsMenuOpen(false)}
+                      className="text-3xl font-medium text-black/90 hover:text-purple-600 transition-colors"
+                    >
+                      {item.name}
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+              
+              <div className="mt-auto p-8">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 20 }}
+                  transition={{ delay: 0.5, duration: 0.4 }}
+                  className="flex justify-center space-x-4 pt-6"
+                >
+                  <motion.button 
+                    className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-purple-500/10 to-blue-500/10 hover:from-purple-500/20 hover:to-blue-500/20 border border-white/20 text-black/80"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Search size={20} />
+                  </motion.button>
+                  <motion.button 
+                    className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-purple-500/10 to-blue-500/10 hover:from-purple-500/20 hover:to-blue-500/20 border border-white/20 text-black/80"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Globe size={20} />
+                  </motion.button>
+                </motion.div>
+              </div>
             </div>
           </motion.div>
         )}
