@@ -133,11 +133,11 @@ const Pioneers = () => {
               transition={{ duration: 0.7, delay: 0.7 }}
             >
               <p className="text-lg md:text-xl text-muted-foreground text-center leading-relaxed">
-                We partner with global luxury, premium and lifestyle brands to make them thrive across Asia. Our global and local teams carefully curate brands, products and experiences to share with the Asian consumer our passion for all things luxurious and beautiful.
+                We collaborate with global luxury, premium, and lifestyle brands to help them flourish across Asia. Our dedicated global and local teams expertly curate brands, products, and experiences, sharing with Asian consumers our passion for all things refined and beautiful.
               </p>
               
               <p className="text-lg md:text-xl text-muted-foreground text-center leading-relaxed">
-                Our story is one of entrepreneurship, partnership and agility to connect global brands with the ever-changing desires of the Asian consumer.
+                Driven by entrepreneurship, partnership, and agility, our mission is to seamlessly connect global brands with the ever-evolving aspirations of the Asian market. Together, we turn visions into success stories.
               </p>
             </motion.div>
           </div>

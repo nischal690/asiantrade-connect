@@ -168,8 +168,7 @@ const AboutPage = () => {
             <div className="text-center space-y-4">
               <h2 className="text-3xl md:text-4xl font-heading font-bold">Our Vision</h2>
               <p className="text-lg text-muted-foreground">
-                To be the leading bridge connecting global luxury brands with the South East Asian market, 
-                fostering meaningful relationships that transcend cultural boundaries and drive mutual growth.
+              To be the leading bridge connecting global luxury brands with the South East Asian market, fostering meaningful relationships that transcend cultural boundaries and drive mutual growth. 
               </p>
             </div>
           </motion.div>
@@ -290,8 +289,8 @@ const AboutPage = () => {
                           </div>
                           <h4 className="text-2xl font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Definition of the Partnership Agreement</h4>
                         </div>
-                        <div className="text-lg text-muted-foreground">
-                          <p>We work closely with the brand and the local partner to define the agreements, providing legal support to ensure the foundation of a long-lasting partnership with minimal friction.</p>
+                        <div className="space-y-3 text-muted-foreground">
+                          <p className="text-lg">We work closely with the brand and the local partner to define the agreements, providing legal support to ensure the foundation of a long-lasting partnership with minimal friction.</p>
                         </div>
                       </div>
                     </div>
@@ -308,8 +307,8 @@ const AboutPage = () => {
                           </div>
                           <h4 className="text-2xl font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Signature</h4>
                         </div>
-                        <div className="text-lg text-muted-foreground">
-                          <p>We preside over and co-sign the agreements as witnesses to ensure compliance and the protection of both parties.</p>
+                        <div className="space-y-3 text-muted-foreground">
+                          <p className="text-lg">We preside over and co-sign the agreements as witnesses to ensure compliance and the protection of both parties.</p>
                         </div>
                       </div>
                     </div>
@@ -326,8 +325,8 @@ const AboutPage = () => {
                           </div>
                           <h4 className="text-2xl font-semibold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">Post-Deal Monitoring & Support</h4>
                         </div>
-                        <div className="text-lg text-muted-foreground">
-                          <p>Once the deal is signed, we remain available to address any issues that may arise, ensuring smooth and seamless operations.</p>
+                        <div className="space-y-3 text-muted-foreground">
+                          <p className="text-lg">Once the deal is signed, we remain available to address any issues that may arise, ensuring smooth and seamless operations.</p>
                         </div>
                       </div>
                     </div>
