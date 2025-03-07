@@ -26,7 +26,6 @@ const AboutPage = () => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
     skipSnaps: false,
-    duration: 50,
     align: 'center',
     containScroll: 'trimSnaps',
     dragFree: true,
@@ -62,7 +61,7 @@ const AboutPage = () => {
 
     const interval = setInterval(() => {
       if (emblaApi && !isHovered) {
-        emblaApi.scrollNext({ duration: 50 });
+        emblaApi.scrollNext();
         updateProgress();
       }
     }, 8000);
