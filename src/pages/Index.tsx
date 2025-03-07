@@ -224,11 +224,12 @@ const Index = () => {
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              animate={{ y: [0, -10, 0] }}
               transition={{
+                duration: 0.5, 
+                delay: 0.5,
                 y: { repeat: Infinity, duration: 3, ease: "easeInOut" }
               }}
+              animate={{ y: [0, -10, 0] }}
             >
               <span className="text-sm font-medium text-white/90">Trusted by 500+ brands</span>
             </motion.div>
@@ -238,11 +239,12 @@ const Index = () => {
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.7 }}
-              animate={{ y: [0, 10, 0] }}
               transition={{
+                duration: 0.5, 
+                delay: 0.7,
                 y: { repeat: Infinity, duration: 4, ease: "easeInOut" }
               }}
+              animate={{ y: [0, 10, 0] }}
             >
               <span className="text-sm font-medium text-white/90">Presence in 12 countries</span>
             </motion.div>
