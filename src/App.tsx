@@ -11,6 +11,10 @@ import CareersPage from "./pages/CareersPage";
 import ContactPage from "./pages/ContactPage";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Terms from "./pages/Terms";
+import AdminPage from "./pages/AdminPage";
+import AdminLoginPage from "./pages/AdminLoginPage";
+import SitemapPage from "./pages/SitemapPage";
+import OurBrandsPage from "./pages/OurBrandsPage";
 
 const queryClient = new QueryClient();
 
@@ -23,12 +27,16 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/our-brands" element={<OurBrandsPage />} />
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/news" element={<NewsPage />} />
           <Route path="/careers" element={<CareersPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<Terms />} />
+          <Route path="/admin/login" element={<AdminLoginPage />} />
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/sitemap" element={<SitemapPage />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>

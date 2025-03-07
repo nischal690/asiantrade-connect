@@ -25,11 +25,17 @@ const Network = () => {
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
-            className="h-[400px] relative bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg shadow-xl"
+            className="h-[400px] relative rounded-lg shadow-xl overflow-hidden bg-gray-900"
           >
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-48 h-48 rounded-full bg-gradient-to-br from-primary to-secondary animate-pulse" />
-            </div>
+            {/* Background Map Image */}
+            <img 
+              src="/map.png"
+              alt="Southeast Asia Map"
+              className="absolute inset-0 w-full h-full object-cover opacity-80"
+            />
+            
+            {/* Overlay gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-gray-900/50 to-transparent" />
           </motion.div>
         </div>
       </div>

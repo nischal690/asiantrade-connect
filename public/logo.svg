@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="300" height="80" viewBox="0 0 300 80" xmlns="http://www.w3.org/2000/svg">
+  <!-- Circle element -->
+  <g transform="translate(20, 15)">
+    <circle cx="25" cy="25" r="23" fill="none" stroke="#2196F3" stroke-width="4"/>
+    <circle cx="25" cy="25" r="8" fill="#2196F3"/>
+  </g>
+  
+  <!-- Text elements -->
+  <text x="85" y="45" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#000000">AsianTrade</text>
+  <text x="85" y="65" font-family="Arial, sans-serif" font-size="14" fill="#666666">CONNECT</text>
+</svg>

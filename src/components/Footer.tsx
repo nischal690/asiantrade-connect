@@ -48,31 +48,26 @@ const Footer = () => {
             </div>
           </motion.div>
 
-          {/* Quick Links */}
+          {/* Legal */}
           <motion.div variants={itemVariants} className="space-y-4">
-            <h3 className="text-lg font-heading font-semibold">Quick Links</h3>
-            <div className="space-y-2">
-              <motion.div whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
-                <Link to="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary-foreground transition-colors">
+            <h3 className="text-lg font-heading font-semibold">Legal</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link to="/privacy-policy" className="text-muted-foreground hover:text-foreground transition-colors">
                   Privacy Policy
                 </Link>
-              </motion.div>
-              <motion.div whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
-                <Link to="/terms" className="text-sm text-muted-foreground hover:text-primary-foreground transition-colors">
-                  Terms of Service
+              </li>
+              <li>
+                <Link to="/terms" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Terms & Conditions
                 </Link>
-              </motion.div>
-              <motion.div whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
-                <Link to="/careers" className="text-sm text-muted-foreground hover:text-primary-foreground transition-colors">
-                  Careers
+              </li>
+              <li>
+                <Link to="/sitemap" className="text-muted-foreground hover:text-foreground transition-colors">
+                  Sitemap
                 </Link>
-              </motion.div>
-              <motion.div whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
-                <Link to="/news" className="text-sm text-muted-foreground hover:text-primary-foreground transition-colors">
-                  News
-                </Link>
-              </motion.div>
-            </div>
+              </li>
+            </ul>
           </motion.div>
 
           {/* Social Media */}
@@ -101,7 +96,7 @@ const Footer = () => {
           className="mt-12 pt-8 border-t border-primary-dark/10"
         >
           <p className="text-center text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Asian Trade Connect. All rights reserved.
+            {new Date().getFullYear()} Asian Trade Connect. All rights reserved.
           </p>
         </motion.div>
       </div>

@@ -54,24 +54,19 @@ const Navbar = () => {
             to="/" 
             className="relative group"
           >
-            <motion.span 
-              className="text-2xl font-heading font-bold bg-clip-text text-transparent bg-gradient-to-r from-black to-black/80"
+            <motion.img 
+              src="/logo.png"
+              alt="AsianTrade Connect Logo"
+              className="h-32 w-auto"
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
-              ATC
-            </motion.span>
-            <motion.div
-              className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-accent via-accent/80 to-transparent"
-              initial={{ scaleX: 0, opacity: 0 }}
-              whileHover={{ scaleX: 1, opacity: 1 }}
-              transition={{ duration: 0.3 }}
             />
           </Link>
 
           <div className="hidden md:flex items-center space-x-1">
             <NavLink to="/">Home</NavLink>
             <NavLink to="/about">About Us</NavLink>
+            <NavLink to="/our-brands">Our Brands</NavLink>
             <NavLink to="/services">Our Services</NavLink>
             <NavLink to="/news">News</NavLink>
             <NavLink to="/contact">Contact</NavLink>
@@ -126,6 +121,9 @@ const Navbar = () => {
               </NavLink>
               <NavLink to="/about" onClick={() => setIsMenuOpen(false)}>
                 About Us
+              </NavLink>
+              <NavLink to="/our-brands" onClick={() => setIsMenuOpen(false)}>
+                Our Brands
               </NavLink>
               <NavLink to="/services" onClick={() => setIsMenuOpen(false)}>
                 Our Services
