@@ -15,7 +15,7 @@ const Pioneers = () => {
   const opacity = useTransform(scrollYProgress, [0, 0.3], [0.3, 1]);
   
   // Text animation variants
-  const titleWords = "Pioneers of luxury in Asia".split(" ");
+  const titleWords = "Pioneers of luxury in South East Asia".split(" ");
   
   return (
     <section 
@@ -97,7 +97,7 @@ const Pioneers = () => {
                   rotateZ: { duration: 5, repeat: Infinity, ease: "easeInOut" }
                 }}
               >
-                <span className="text-5xl font-bold bg-gradient-to-r from-accent via-primary to-secondary bg-clip-text text-transparent">Asia</span>
+                <span className="text-5xl font-bold bg-gradient-to-r from-accent via-primary to-secondary bg-clip-text text-transparent">SE Asia</span>
               </motion.div>
             </div>
           </motion.div>
@@ -158,10 +158,10 @@ const Pioneers = () => {
             className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10"
           >
             {[
-              { value: '30+', label: 'Years Experience' },
-              { value: '200+', label: 'Luxury Brands' },
-              { value: '12', label: 'Asian Markets' },
-              { value: '2500+', label: 'Team Members' }
+              { value: '10+', label: 'Years Experience' },
+              { value: '50+', label: 'Luxury Brands' },
+              { value: '10', label: 'SE Asian Markets' },
+              { value: '25+', label: 'Team Members' }
             ].map((stat, index) => (
               <motion.div 
                 key={index}

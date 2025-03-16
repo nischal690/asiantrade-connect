@@ -131,7 +131,12 @@ const ContactPage = () => {
                   <MapPin className="h-6 w-6 text-primary" />
                   <div>
                     <h3 className="font-heading font-semibold">Visit Us</h3>
-                    <p className="text-muted-foreground">123 Luxury Lane, Milan, Italy</p>
+                    <div className="text-muted-foreground space-y-1">
+                      <p>Milan, Italy</p>
+                      <p>Paris, France</p>
+                      <p>Bangkok, Thailand</p>
+                      <p>Hong Kong</p>
+                    </div>
                   </div>
                 </motion.div>
 
@@ -142,18 +147,7 @@ const ContactPage = () => {
                   <Phone className="h-6 w-6 text-secondary" />
                   <div>
                     <h3 className="font-heading font-semibold">Call Us</h3>
-                    <p className="text-muted-foreground">+1 (555) 123-4567</p>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  className="flex items-start space-x-4 p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10"
-                >
-                  <Mail className="h-6 w-6 text-accent" />
-                  <div>
-                    <h3 className="font-heading font-semibold">Email Us</h3>
-                    <p className="text-muted-foreground">contact@asiantrade-connect.com</p>
+                    <p className="text-muted-foreground">+393454293347</p>
                   </div>
                 </motion.div>
               </div>

@@ -1,17 +1,26 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import Pioneers from "@/components/Pioneers";
-import About from "@/components/About";
-import Services from "@/components/Services";
-import NewsSection from "@/components/NewsSection";
-import Network from "@/components/Network";
-import Careers from "@/components/Careers";
-import Footer from "@/components/Footer";
-import BrandGrowth from "@/components/BrandGrowth";
+// Lazy load non-critical components
+const Pioneers = lazy(() => import("@/components/Pioneers"));
+const About = lazy(() => import("@/components/About"));
+const Services = lazy(() => import("@/components/Services"));
+const NewsSection = lazy(() => import("@/components/NewsSection"));
+const Network = lazy(() => import("@/components/Network"));
+const Careers = lazy(() => import("@/components/Careers"));
+const Footer = lazy(() => import("@/components/Footer"));
+const BrandGrowth = lazy(() => import("@/components/BrandGrowth"));
+const Testimonials = lazy(() => import("@/components/Testimonials"));
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Play, ChevronDown } from "lucide-react";
 import { getHomepageContent } from "@/lib/api/homepage";
+
+// Loading component for suspense fallback
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center py-12">
+    <div className="w-12 h-12 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
+  </div>
+);
 
 const Index = () => {
   const [content, setContent] = useState({
@@ -20,15 +29,27 @@ const Index = () => {
     storyDescription: "Experience how we're revolutionizing Asian trade connections through innovative solutions and strategic partnerships."
   });
   const [isLoading, setIsLoading] = useState(true);
+  const [pageLoaded, setPageLoaded] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const videoContainerRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
   
   // Parallax and scroll animations
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.1], [1, 1.1]);
+
+  // Track page load status
+  useEffect(() => {
+    // Mark page as loaded after initial render
+    const timer = setTimeout(() => {
+      setPageLoaded(true);
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const fetchContent = async () => {
@@ -54,6 +75,50 @@ const Index = () => {
     };
     fetchContent();
   }, []);
+
+  // Auto-play video when it comes into view - with optimized observer
+  useEffect(() => {
+    if (!videoRef.current || !videoContainerRef.current || !pageLoaded) return;
+
+    const options = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.5,
+    };
+
+    let observer: IntersectionObserver;
+    
+    // Delay creating the observer until page has loaded
+    const initObserver = () => {
+      const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            if (videoRef.current && !isPlaying) {
+              videoRef.current.play()
+                .then(() => setIsPlaying(true))
+                .catch(error => console.error('Auto-play failed:', error));
+            }
+          } else {
+            if (videoRef.current && isPlaying) {
+              videoRef.current.pause();
+              setIsPlaying(false);
+            }
+          }
+        });
+      };
+
+      observer = new IntersectionObserver(handleIntersection, options);
+      observer.observe(videoContainerRef.current!);
+    };
+    
+    // Delay video observer initialization
+    const timer = setTimeout(initObserver, 1000);
+
+    return () => {
+      clearTimeout(timer);
+      if (observer) observer.disconnect();
+    };
+  }, [isPlaying, pageLoaded, videoRef.current, videoContainerRef.current]);
 
   const handlePlayPause = () => {
     if (videoRef.current) {
@@ -83,57 +148,61 @@ const Index = () => {
       className="min-h-screen bg-background overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.8 }}
+      transition={{ duration: 0.5 }}
     >
-      {/* Animated background gradient */}
+      {/* Optimized animated background gradient - reduced complexity */}
       <div className="fixed inset-0 bg-gradient-to-br from-background via-background to-background z-[-1]">
-        {/* Animated decorative elements */}
-        <motion.div 
-          className="absolute top-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-primary/5 to-accent/5 blur-[120px]"
-          animate={{ 
-            scale: [1, 1.2, 1],
-            rotate: [0, 45, 0]
-          }}
-          transition={{ 
-            duration: 25, 
-            repeat: Infinity,
-            ease: "easeInOut" 
-          }}
-        />
-        <motion.div 
-          className="absolute bottom-1/3 left-1/4 w-[400px] h-[400px] rounded-full bg-gradient-to-bl from-secondary/5 to-primary/5 blur-[100px]"
-          animate={{ 
-            scale: [1, 1.3, 1],
-            rotate: [0, -30, 0]
-          }}
-          transition={{ 
-            duration: 20, 
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 5
-          }}
-        />
+        {/* Simplified decorative elements with reduced motion */}
+        {pageLoaded && (
+          <>
+            <motion.div 
+              className="absolute top-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-primary/5 to-accent/5 blur-[120px]"
+              animate={{ 
+                scale: [1, 1.1, 1],
+                rotate: [0, 15, 0]
+              }}
+              transition={{ 
+                duration: 30, 
+                repeat: Infinity,
+                ease: "linear" 
+              }}
+            />
+            <motion.div 
+              className="absolute bottom-1/3 left-1/4 w-[400px] h-[400px] rounded-full bg-gradient-to-bl from-secondary/5 to-primary/5 blur-[100px]"
+              animate={{ 
+                scale: [1, 1.15, 1],
+                rotate: [0, -10, 0]
+              }}
+              transition={{ 
+                duration: 25, 
+                repeat: Infinity,
+                ease: "linear",
+                delay: 5
+              }}
+            />
+          </>
+        )}
       </div>
       
       <Navbar />
       <Hero />
       
-      {/* Story Video Section with modern design and animations */}
+      {/* Story Video Section with optimized animations */}
       <div ref={sectionRef} className="w-full relative py-32 overflow-hidden">
         <motion.div 
           className="max-w-6xl mx-auto px-6 relative z-10"
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6 }}
         >
-          {/* Animated section title */}
+          {/* Section title */}
           <motion.div 
             className="text-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.5 }}
           >
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-6">
               {content.storyTitle}
@@ -143,172 +212,126 @@ const Index = () => {
             </p>
           </motion.div>
 
-          {/* Video container with glass effect */}
+          {/* Video container with optimized glass effect */}
           <motion.div 
             className="glass-card group relative z-20"
-            whileHover={{ scale: 1.02 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.5 }}
+            ref={videoContainerRef}
           >
             {/* Loading overlay */}
             {isLoading && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm rounded-2xl z-10">
                 <div className="flex flex-col items-center">
                   <div className="w-16 h-16 border-4 border-accent/30 border-t-accent rounded-full animate-spin mb-4"></div>
-                  <p className="text-white/90 font-medium">Loading your experience...</p>
+                  <p className="text-white text-shadow-sm">Loading video...</p>
                 </div>
               </div>
             )}
-            
-            {/* Error overlay */}
-            {error && (
-              <div className="absolute inset-0 flex items-center justify-center bg-destructive/10 backdrop-blur-sm rounded-2xl z-10">
-                <div className="text-center p-8 max-w-md">
-                  <div className="w-16 h-16 mx-auto mb-4 text-destructive">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                    </svg>
-                  </div>
-                  <p className="text-destructive font-medium text-lg mb-2">Failed to load video</p>
-                  <p className="text-muted-foreground mb-4">We're having trouble loading this content right now.</p>
-                  <button 
-                    onClick={() => window.location.reload()} 
-                    className="gradient-btn primary px-6 py-3"
-                  >
-                    Try again
-                  </button>
+
+            {/* Error message */}
+            {error && !isLoading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm rounded-2xl z-10">
+                <div className="bg-red-500/90 text-white px-6 py-4 rounded-lg max-w-md text-center">
+                  <p className="font-medium">Failed to load video</p>
+                  <p className="text-sm mt-1 text-white/80">{error}</p>
                 </div>
               </div>
             )}
-            
-            {/* Video Player */}
-            {content.videoUrl && !error && (
-              <div className="aspect-video overflow-hidden rounded-2xl relative">
-                <video
-                  ref={videoRef}
-                  className="w-full h-full object-cover"
-                  playsInline
-                  loop
-                  muted
-                  onError={handleVideoError}
-                >
-                  <source src={content.videoUrl} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-                
-                {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-70"></div>
-                
-                {/* Play button */}
-                <button
-                  onClick={handlePlayPause}
-                  className="absolute inset-0 flex items-center justify-center group-hover:scale-105 transition-transform duration-300"
-                >
-                  <motion.div 
-                    className="relative w-20 h-20 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center shadow-xl border border-white/20"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                  >
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-r from-accent/70 to-primary/70 animate-pulse-slow"></div>
-                    <Play className={`w-8 h-8 text-white relative z-10 ${isPlaying ? 'opacity-80' : 'opacity-100'}`} />
-                  </motion.div>
-                </button>
-              </div>
-            )}
+
+            {/* Video player with preload="metadata" to optimize loading */}
+            <video
+              ref={videoRef}
+              className="w-full h-auto rounded-2xl shadow-2xl transform transition-transform duration-500 group-hover:scale-[1.01]"
+              poster="/video-placeholder.jpg"
+              preload="metadata"
+              muted
+              playsInline
+              loop
+              onError={handleVideoError}
+            >
+              {content.videoUrl && <source src={content.videoUrl} type="video/mp4" />}
+              Your browser does not support the video tag.
+            </video>
+
+            {/* Play/Pause overlay button */}
+            <div 
+              onClick={handlePlayPause}
+              className="absolute inset-0 flex items-center justify-center cursor-pointer group/play"
+            >
+              <motion.div
+                initial={{ opacity: 0.9, scale: 1 }}
+                whileHover={{ opacity: 1, scale: 1.05 }}
+                className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-black/30 backdrop-blur-sm flex items-center justify-center transition-all duration-300 group-hover/play:bg-black/50"
+              >
+                <motion.div animate={{ scale: isPlaying ? 0.8 : 1 }}>
+                  {isPlaying ? (
+                    <div className="w-8 h-8 border-l-2 border-r-2 border-white"></div>
+                  ) : (
+                    <Play size={30} className="text-white ml-1" fill="white" />
+                  )}
+                </motion.div>
+              </motion.div>
+            </div>
           </motion.div>
-          
-          {/* Floating badges */}
-          <div className="relative h-0 overflow-visible z-0">
-            <motion.div
-              className="absolute -top-16 -right-4 bg-white/10 backdrop-blur-md rounded-full px-4 py-2 border border-white/10 shadow-xl"
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.5, 
-                delay: 0.5,
-                y: { repeat: Infinity, duration: 3, ease: "easeInOut" }
-              }}
-              animate={{ y: [0, -10, 0] }}
+
+          {/* Scroll indicator with reduced animation complexity */}
+          <motion.div 
+            className="mt-12 flex justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1, duration: 0.5 }}
+          >
+            <motion.button
+              onClick={scrollToNextSection}
+              className="flex flex-col items-center text-muted-foreground hover:text-foreground transition-colors"
+              whileHover={{ y: 3 }}
             >
-              <span className="text-sm font-medium text-white/90">Trusted by 500+ brands</span>
-            </motion.div>
-            
-            <motion.div
-              className="absolute -bottom-12 -left-4 bg-white/10 backdrop-blur-md rounded-full px-4 py-2 border border-white/10 shadow-xl"
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.5, 
-                delay: 0.7,
-                y: { repeat: Infinity, duration: 4, ease: "easeInOut" }
-              }}
-              animate={{ y: [0, 10, 0] }}
-            >
-              <span className="text-sm font-medium text-white/90">Presence in 12 countries</span>
-            </motion.div>
-          </div>
+              <span className="text-sm mb-2">Scroll for more</span>
+              <ChevronDown className="animate-bounce" />
+            </motion.button>
+          </motion.div>
         </motion.div>
       </div>
       
-      {/* Rest of the sections with proper spacing and integrated animations */}
-      <Pioneers />
-      <About />
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.8 }}
-      >
-        <BrandGrowth />
-      </motion.div>
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.8 }}
-      >
-        <Services />
-      </motion.div>
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.8 }}
-      >
-        <NewsSection />
-      </motion.div>
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.8 }}
-      >
-        <Network />
-      </motion.div>
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.8 }}
-      >
-        <Careers />
-      </motion.div>
-      <Footer />
+      {/* Wrap remaining components in Suspense for lazy loading */}
+      <Suspense fallback={<LoadingSpinner />}>
+        <Pioneers />
+      </Suspense>
       
-      {/* Scroll to top button */}
-      <motion.button
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className="fixed bottom-8 right-8 w-12 h-12 rounded-full bg-primary/80 backdrop-blur-sm flex items-center justify-center shadow-lg border border-white/10 z-50"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-      >
-        <ChevronDown className="w-5 h-5 text-white transform rotate-180" />
-      </motion.button>
+      <Suspense fallback={<LoadingSpinner />}>
+        <About />
+      </Suspense>
+      
+      <Suspense fallback={<LoadingSpinner />}>
+        <BrandGrowth />
+      </Suspense>
+      
+      <Suspense fallback={<LoadingSpinner />}>
+        <Services />
+      </Suspense>
+      
+      <Suspense fallback={<LoadingSpinner />}>
+        <Testimonials />
+      </Suspense>
+      
+      <Suspense fallback={<LoadingSpinner />}>
+        <NewsSection />
+      </Suspense>
+      
+      <Suspense fallback={<LoadingSpinner />}>
+        <Network />
+      </Suspense>
+      
+      <Suspense fallback={<LoadingSpinner />}>
+        <Careers />
+      </Suspense>
+      
+      <Suspense fallback={<LoadingSpinner />}>
+        <Footer />
+      </Suspense>
     </motion.div>
   );
 };

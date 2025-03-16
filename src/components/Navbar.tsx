@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, X, ChevronDown, Search, Globe } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence, useMotionValueEvent, useScroll } from "framer-motion";
 
@@ -65,7 +65,18 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const [isLoaded, setIsLoaded] = useState(false);
   const { scrollY } = useScroll();
+
+  // Reduced motion for initial load
+  useEffect(() => {
+    // Delay setting loaded state slightly for smoother startup
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, []);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setIsScrolled(latest > 20);
@@ -76,10 +87,10 @@ const Navbar = () => {
       y: 0,
       transition: { 
         type: "spring", 
-        stiffness: 100, 
+        stiffness: 70, // Reduced stiffness for smoother motion
         damping: 20,
         when: "beforeChildren",
-        staggerChildren: 0.1 
+        staggerChildren: 0.05 // Reduced stagger timing
       } 
     },
     hidden: { 
@@ -87,7 +98,7 @@ const Navbar = () => {
       transition: { 
         ease: "easeInOut",
         when: "afterChildren",
-        staggerChildren: 0.05,
+        staggerChildren: 0.03, // Reduced stagger timing
         staggerDirection: -1
       } 
     }
@@ -97,7 +108,7 @@ const Navbar = () => {
     visible: { 
       y: 0, 
       opacity: 1,
-      transition: { type: "spring", stiffness: 300, damping: 20 }
+      transition: { type: "spring", stiffness: 200, damping: 20 }
     },
     hidden: { 
       y: -20, 
@@ -110,7 +121,7 @@ const Navbar = () => {
     <motion.nav
       variants={navVariants}
       initial="hidden"
-      animate="visible"
+      animate={isLoaded ? "visible" : "hidden"}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled
           ? "backdrop-blur-xl bg-white/85 shadow-lg border-b border-black/5 py-3"
@@ -133,13 +144,13 @@ const Navbar = () => {
                 className="h-32 w-auto"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2, duration: 0.6 }}
+                transition={{ delay: 0.1, duration: 0.5 }}
               />
               <motion.div 
                 className="absolute -bottom-1 left-0 h-0.5 w-full bg-gradient-to-r from-purple-500 via-indigo-400 to-blue-500"
                 initial={{ width: 0, opacity: 0 }}
-                animate={{ width: "100%", opacity: 1 }}
-                transition={{ delay: 0.8, duration: 0.8 }}
+                animate={isLoaded ? { width: "100%", opacity: 1 } : { width: 0, opacity: 0 }}
+                transition={{ delay: 0.3, duration: 0.6 }}
               />
             </motion.div>
           </Link>
@@ -165,147 +176,62 @@ const Navbar = () => {
             </motion.div>
           </div>
 
-          <div className="hidden md:flex items-center space-x-4">
-            <motion.div
-              className="relative"
-              variants={itemVariants}
-              whileHover={{ scale: 1.05 }}
-            >
-              <motion.button 
-                className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-purple-500/10 to-blue-500/10 hover:from-purple-500/20 hover:to-blue-500/20 backdrop-blur-lg border border-white/20 text-black/80 transition-all duration-300"
-                whileTap={{ scale: 0.95 }}
-              >
-                <Search size={18} />
-              </motion.button>
-            </motion.div>
-            
-            <motion.div
-              className="relative"
-              variants={itemVariants}
-              whileHover={{ scale: 1.05 }}
-            >
-              <motion.button 
-                className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-purple-500/10 to-blue-500/10 hover:from-purple-500/20 hover:to-blue-500/20 backdrop-blur-lg border border-white/20 text-black/80 transition-all duration-300"
-                whileTap={{ scale: 0.95 }}
-              >
-                <Globe size={18} />
-              </motion.button>
-            </motion.div>
-          </div>
-
           <motion.button
             className="md:hidden relative z-50 w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-br from-purple-500/10 to-blue-500/10 backdrop-blur-lg border border-black/10"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             whileHover={{ scale: 1.05, boxShadow: "0 0 8px rgba(120, 120, 255, 0.3)" }}
             whileTap={{ scale: 0.95 }}
             aria-label="Toggle menu"
-            variants={itemVariants}
           >
-            <AnimatePresence mode="wait">
-              {isMenuOpen ? (
-                <motion.div
-                  key="close"
-                  initial={{ rotate: -90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 90, opacity: 0 }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                >
-                  <X className="h-6 w-6 text-black" />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="menu"
-                  initial={{ rotate: 90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: -90, opacity: 0 }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                >
-                  <Menu className="h-6 w-6 text-black" />
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </motion.button>
         </div>
       </div>
 
+      {/* Mobile menu with optimized animations */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0, backdropFilter: "blur(0px)" }}
-            animate={{ 
-              opacity: 1, 
-              height: "100vh", 
-              backdropFilter: "blur(20px)"
-            }}
-            exit={{ 
-              opacity: 0, 
-              height: 0, 
-              backdropFilter: "blur(0px)",
-              transition: { 
-                height: { delay: 0.2 },
-                backdropFilter: { duration: 0.3 } 
-              }
-            }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="md:hidden fixed inset-0 top-[5rem] bg-gradient-to-b from-white/90 to-white/80 backdrop-blur-xl border-t border-black/5 shadow-2xl"
+            className="fixed inset-0 bg-white/90 backdrop-blur-xl z-40 flex flex-col pt-32 px-6 pb-16 overflow-y-auto"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "100vh" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
           >
-            <div className="flex flex-col h-full">
-              <div className="flex flex-col space-y-6 p-8">
-                {[
-                  { path: "/", name: "Home" },
-                  { path: "/about", name: "About Us" },
-                  { path: "/our-brands", name: "Our Brands" },
-                  { path: "/services", name: "Our Services" },
-                  { path: "/news", name: "News" },
-                  { path: "/contact", name: "Contact" }
-                ].map((item, i) => (
-                  <motion.div
-                    key={item.path}
-                    initial={{ opacity: 0, x: -30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -30 }}
-                    transition={{ 
-                      delay: 0.1 + i * 0.05, 
-                      duration: 0.4,
-                      ease: [0.22, 1, 0.36, 1]
-                    }}
-                  >
-                    <Link 
-                      to={item.path} 
-                      onClick={() => setIsMenuOpen(false)}
-                      className="text-3xl font-medium text-black/90 hover:text-purple-600 transition-colors"
-                    >
-                      {item.name}
-                    </Link>
-                  </motion.div>
-                ))}
-              </div>
-              
-              <div className="mt-auto p-8">
+            <div className="flex flex-col space-y-2">
+              {[
+                { to: "/", label: "Home" },
+                { to: "/about", label: "About Us", hasDropdown: true },
+                { to: "/our-brands", label: "Our Brands" },
+                { to: "/services", label: "Our Services", hasDropdown: true },
+                { to: "/news", label: "News" },
+                { to: "/contact", label: "Contact" },
+              ].map((link, i) => (
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  transition={{ delay: 0.5, duration: 0.4 }}
-                  className="flex justify-center space-x-4 pt-6"
+                  key={link.to}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  transition={{ delay: i * 0.05, duration: 0.3 }}
                 >
-                  <motion.button 
-                    className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-purple-500/10 to-blue-500/10 hover:from-purple-500/20 hover:to-blue-500/20 border border-white/20 text-black/80"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Search size={20} />
-                  </motion.button>
-                  <motion.button 
-                    className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-purple-500/10 to-blue-500/10 hover:from-purple-500/20 hover:to-blue-500/20 border border-white/20 text-black/80"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <Globe size={20} />
-                  </motion.button>
+                  <NavLink to={link.to} hasDropdown={link.hasDropdown} onClick={() => setIsMenuOpen(false)}>
+                    {link.label}
+                  </NavLink>
                 </motion.div>
-              </div>
+              ))}
             </div>
+
+            <motion.div 
+              className="mt-auto pt-8 border-t border-gray-200/50"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.7 }}
+              transition={{ delay: 0.5, duration: 0.3 }}
+            >
+              <p className="text-sm text-center text-gray-500">
+                {new Date().getFullYear()} AsianTrade Connect<br />
+                Connecting Asian Trade to the World
+              </p>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

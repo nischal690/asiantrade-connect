@@ -35,11 +35,11 @@ const About = () => {
           {/* Team Section */}
           <div className="mt-16">
             <h3 className="text-3xl font-heading font-bold text-center mb-12">Our Leadership</h3>
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-3 gap-8">
               {/* Giovanni Feo */}
               <motion.div 
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.4, duration: 0.8 }}
                 className="bg-white rounded-lg shadow-lg overflow-hidden"
@@ -65,15 +65,15 @@ const About = () => {
 
               {/* Lorenzo Marini */}
               <motion.div 
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.6, duration: 0.8 }}
                 className="bg-white rounded-lg shadow-lg overflow-hidden"
               >
                 <div className="relative h-auto">
                   <img
-                    src="/cof.jpg"
+                    src="/cof.png"
                     alt="Lorenzo Marini"
                     className="w-full object-contain"
                   />
@@ -86,6 +86,31 @@ const About = () => {
                     Based in Paris, Lorenzo brings a wealth of expertise in strategy consulting and commercial development, 
                     specializing in the European luxury market. He has cultivated strong relationships with independent 
                     European luxury brands and iconic haute-couture groups, driving growth and innovation in the industry.
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* Tommaso Alboni */}
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.8, duration: 0.8 }}
+                className="bg-white rounded-lg shadow-lg overflow-hidden"
+              >
+                <div className="relative h-auto">
+                  <img
+                    src="/TOMMASO ALBONI.png"
+                    alt="Tommaso Alboni"
+                    className="w-full object-contain"
+                  />
+                </div>
+                <div className="p-6">
+                  <h4 className="text-xl font-bold">TOMMASO ALBONI</h4>
+                  <p className="text-primary font-medium">Strategic Partnerships</p>
+                  <p className="text-sm text-muted-foreground mt-1">Based in Milan</p>
+                  <p className="mt-4 text-muted-foreground">
+                    Based in Milan, Tommaso holds a strong background in strategy consulting, commercial expertise, and business development to facilitate successful expansions into the Asian luxury fashion market. With a deep understanding of the industry and a well-established network across key Asian markets, he helps connect emerging brands with potential investors to foster partnerships and drive success.
                   </p>
                 </div>
               </motion.div>

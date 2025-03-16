@@ -16,9 +16,16 @@ const founders = [
   {
     name: "LORENZO MARINI",
     role: "COO & Co-Founder",
-    image: "/cof.jpg",
+    image: "/cof.png",
     location: "Based in Paris",
     description: "Based in Paris, Lorenzo brings a wealth of expertise in strategy consulting and commercial development, specializing in the European luxury market. He has cultivated strong relationships with independent European luxury brands and iconic haute-couture groups, driving growth and innovation in the industry.",
+  },
+  {
+    name: "TOMMASO ALBONI",
+    role: "Strategic Partnerships",
+    image: "/TOMMASO ALBONI.png",
+    location: "Based in Milan",
+    description: "Based in Milan, Tommaso holds a strong background in strategy consulting, commercial expertise, and business development to facilitate successful expansions into the Asian luxury fashion market. With a deep understanding of the industry and a well-established network across key Asian markets, he helps connect emerging brands with potential investors to foster partnerships and drive success.",
   },
 ];
 
@@ -375,8 +382,13 @@ const AboutPage = () => {
       </section>
 
       {/* Founders Section */}
-      <section className="py-24">
-        <div className="container mx-auto px-6">
+      <section className="py-24 relative overflow-hidden">
+        {/* Background elements */}
+        <div className="absolute -left-24 top-1/3 w-64 h-64 bg-primary/20 rounded-full blur-3xl" />
+        <div className="absolute -right-24 bottom-1/3 w-64 h-64 bg-accent/20 rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-secondary/5 to-transparent" />
+        
+        <div className="container mx-auto px-6 relative">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -384,30 +396,75 @@ const AboutPage = () => {
             transition={{ duration: 0.8 }}
             className="max-w-6xl mx-auto space-y-12"
           >
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-center">Our Leadership</h2>
+            <div className="text-center mb-16">
+              <motion.h2 
+                initial={{ opacity: 0, y: -20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="text-4xl md:text-5xl font-heading font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent inline-block"
+              >
+                Our Leadership
+              </motion.h2>
+              <motion.div 
+                initial={{ width: 0 }}
+                whileInView={{ width: "120px" }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 0.3 }}
+                className="h-1 bg-gradient-to-r from-primary via-secondary to-accent mx-auto mt-4 rounded-full"
+              />
+            </div>
             
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-3 gap-10">
               {founders.map((founder, index) => (
                 <motion.div
                   key={founder.name}
-                  initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.8, delay: index * 0.2 }}
-                  className="group relative overflow-hidden rounded-2xl bg-white shadow-xl hover:shadow-2xl transition-all duration-300"
+                  className="group relative rounded-2xl overflow-hidden"
                 >
-                  <div className="w-full">
-                    <img 
-                      src={founder.image} 
-                      alt={founder.name}
-                      className="w-full h-auto object-contain transition-transform duration-300 group-hover:scale-105"
-                    />
-                  </div>
-                  <div className="p-6 space-y-4">
-                    <h3 className="text-2xl font-heading font-bold">{founder.name}</h3>
-                    <p className="text-accent font-medium">{founder.role}</p>
-                    <p className="text-sm text-muted-foreground">{founder.location}</p>
-                    <p className="text-muted-foreground">{founder.description}</p>
+                  {/* Glass card effect */}
+                  <div className="absolute inset-0 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-xl z-10" />
+                  
+                  {/* Gradient hover effect */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-primary/20 via-secondary/20 to-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0" />
+                  
+                  {/* Content */}
+                  <div className="relative z-20 h-full flex flex-col">
+                    {/* Image container with overlay */}
+                    <div className="relative overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      <img 
+                        src={founder.image} 
+                        alt={founder.name}
+                        className="w-full h-80 object-cover object-center transition-transform duration-700 group-hover:scale-110"
+                      />
+                    </div>
+                    
+                    {/* Text content */}
+                    <div className="p-6 bg-white/80 backdrop-blur-sm flex-grow flex flex-col">
+                      <h3 className="text-2xl font-heading font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">{founder.name}</h3>
+                      <p className="text-accent font-medium mt-1">{founder.role}</p>
+                      <p className="text-sm text-muted-foreground mt-1 flex items-center gap-1">
+                        <span className="w-2 h-2 rounded-full bg-gradient-to-r from-primary to-secondary inline-block"></span>
+                        {founder.location}
+                      </p>
+                      
+                      <div className="mt-4 relative overflow-hidden">
+                        <p className="text-muted-foreground text-sm leading-relaxed">{founder.description}</p>
+                        <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white/80 to-transparent opacity-0 group-hover:opacity-0 transition-opacity duration-300" />
+                      </div>
+                      
+                      <motion.div 
+                        initial={{ width: 0 }}
+                        whileInView={{ width: "40px" }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.4, delay: 0.6 + index * 0.2 }}
+                        className="h-0.5 bg-gradient-to-r from-primary to-secondary mt-4 rounded-full group-hover:w-full transition-all duration-500"
+                      />
+                    </div>
                   </div>
                 </motion.div>
               ))}
