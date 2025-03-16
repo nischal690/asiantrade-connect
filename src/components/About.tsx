@@ -44,11 +44,11 @@ const About = () => {
                 transition={{ delay: 0.4, duration: 0.8 }}
                 className="bg-white rounded-lg shadow-lg overflow-hidden"
               >
-                <div className="relative h-auto">
+                <div className="relative h-80">
                   <img
                     src="/giovanni.png"
                     alt="Giovanni Feo"
-                    className="w-full object-contain"
+                    className="w-full h-full object-cover object-top"
                   />
                 </div>
                 <div className="p-6">
@@ -71,11 +71,11 @@ const About = () => {
                 transition={{ delay: 0.6, duration: 0.8 }}
                 className="bg-white rounded-lg shadow-lg overflow-hidden"
               >
-                <div className="relative h-auto">
+                <div className="relative h-80">
                   <img
                     src="/cof.png"
                     alt="Lorenzo Marini"
-                    className="w-full object-contain"
+                    className="w-full h-full object-cover object-top"
                   />
                 </div>
                 <div className="p-6">
@@ -98,11 +98,11 @@ const About = () => {
                 transition={{ delay: 0.8, duration: 0.8 }}
                 className="bg-white rounded-lg shadow-lg overflow-hidden"
               >
-                <div className="relative h-auto">
+                <div className="relative h-80">
                   <img
                     src="/TOMMASO ALBONI.png"
                     alt="Tommaso Alboni"
-                    className="w-full object-contain"
+                    className="w-full h-full object-cover object-top"
                   />
                 </div>
                 <div className="p-6">

@@ -1,82 +1,99 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { useAuth } from '@/lib/auth';
+import { useSupabase } from '@/lib/supabase-context';
 
 export default function AdminLoginPage() {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { auth } = useSupabase();
 
-  useEffect(() => {
-    if (isAuthenticated()) {
-      navigate('/admin');
-    }
-  }, [isAuthenticated, navigate]);
+  // Redirect if already authenticated
+  if (auth.isAuthenticated) {
+    navigate('/admin');
+    return null;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      const success = login(password);
+      const { success, error } = await auth.signInWithEmail(email, password);
+      
       if (success) {
         toast({
           title: "Success",
           description: "Logged in successfully",
         });
+        navigate('/admin');
       } else {
-        throw new Error('Invalid password');
+        throw new Error(error);
       }
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: "Invalid password",
+        description: error.message || "Invalid credentials",
         variant: "destructive",
       });
-      setPassword('');
     } finally {
       setIsLoading(false);
     }
   };
 
-  if (isAuthenticated()) {
-    return null;
-  }
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-lg">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-500/10 to-blue-500/10 backdrop-blur-sm">
+      <div className="max-w-md w-full space-y-8 p-8 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl shadow-xl border border-gray-200 dark:border-gray-800">
         <div>
-          <h2 className="text-center text-3xl font-bold text-gray-900">
+          <h2 className="text-center text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
             Admin Login
           </h2>
+          <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
+            Sign in to access the admin dashboard
+          </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="password" className="sr-only">
-              Password
-            </label>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              placeholder="Enter admin password"
-              className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
-            />
+          <div className="space-y-4">
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Email
+              </label>
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="Enter your email"
+                className="mt-1 appearance-none rounded-md relative block w-full transition-all duration-200 border border-gray-300 dark:border-gray-700 placeholder-gray-500 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
+              />
+            </div>
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Password
+              </label>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                placeholder="Enter your password"
+                className="mt-1 appearance-none rounded-md relative block w-full transition-all duration-200 border border-gray-300 dark:border-gray-700 placeholder-gray-500 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
+              />
+            </div>
           </div>
 
           <div>
             <Button
               type="submit"
               disabled={isLoading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
             >
               {isLoading ? (
                 <>

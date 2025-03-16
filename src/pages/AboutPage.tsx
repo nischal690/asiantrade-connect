@@ -434,12 +434,12 @@ const AboutPage = () => {
                   {/* Content */}
                   <div className="relative z-20 h-full flex flex-col">
                     {/* Image container with overlay */}
-                    <div className="relative overflow-hidden">
+                    <div className="relative overflow-hidden h-80">
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       <img 
                         src={founder.image} 
                         alt={founder.name}
-                        className="w-full h-80 object-cover object-center transition-transform duration-700 group-hover:scale-110"
+                        className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
                       />
                     </div>
                     

@@ -249,14 +249,26 @@ const BrandSection = ({ brand, index, isActive, onClick }: {
 };
 
 const OurBrands = () => {
-  const [activeBrandIndex, setActiveBrandIndex] = useState<number | null>(null);
   const [brands, setBrands] = useState<Brand[]>([]);
   const headerRef = useRef(null);
   const isHeaderInView = useInView(headerRef, { once: true });
   
   useEffect(() => {
     // Load brands from the store
-    setBrands(getBrands());
+    const loadedBrands = getBrands();
+    setBrands(loadedBrands);
+    
+    // Create a function to refresh brands when the component is in view
+    const refreshBrands = () => {
+      const updatedBrands = getBrands();
+      setBrands(updatedBrands);
+    };
+    
+    // Set up an interval to check for brand updates
+    const intervalId = setInterval(refreshBrands, 2000);
+    
+    // Clean up the interval when component unmounts
+    return () => clearInterval(intervalId);
   }, []);
   
   const headerVariants = {
@@ -369,8 +381,8 @@ const OurBrands = () => {
               key={brand.name} 
               brand={brand} 
               index={index} 
-              isActive={activeBrandIndex === index}
-              onClick={() => setActiveBrandIndex(activeBrandIndex === index ? null : index)}
+              isActive={true}
+              onClick={() => {}}
             />
           ))}
         </div>

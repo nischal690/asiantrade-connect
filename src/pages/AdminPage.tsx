@@ -143,8 +143,14 @@ export default function AdminPage() {
   return (
     <div className="container mx-auto py-8">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-        <Button variant="outline" onClick={logout}>Logout</Button>
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">Admin Dashboard</h1>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={() => navigate('/admin/storage')} className="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-database"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>
+            Storage
+          </Button>
+          <Button variant="outline" onClick={logout}>Logout</Button>
+        </div>
       </div>
       
       <Tabs defaultValue="blog" className="space-y-6">
