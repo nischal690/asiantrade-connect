@@ -1,4 +1,62 @@
 import { motion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
+
+// Custom component to handle Gist embedding
+const GistEmbed = ({ gistId, file }) => {
+  const iframeRef = useRef(null);
+
+  useEffect(() => {
+    // Create an iframe element
+    const iframe = document.createElement('iframe');
+    
+    // Set iframe attributes
+    iframe.width = '100%';
+    iframe.height = '125%'; // Make it taller to allow for cropping
+    iframe.frameBorder = '0';
+    iframe.scrolling = 'no';
+    iframe.style.border = 'none';
+    iframe.style.overflow = 'hidden';
+    iframe.style.position = 'absolute';
+    iframe.style.top = '-35%'; // Move up to crop the top 20% (15% + 5%)
+    
+    // Set the HTML content
+    const html = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <base target="_parent">
+          <style>
+            body { margin: 0; padding: 0; background: white; }
+            .gist { width: 100%; height: 100%; }
+          </style>
+        </head>
+        <body>
+          <script src="https://gist.github.com/${gistId}.js"></script>
+        </body>
+      </html>
+    `;
+    
+    // Append the iframe to the container
+    if (iframeRef.current) {
+      iframeRef.current.innerHTML = '';
+      iframeRef.current.appendChild(iframe);
+      
+      // Write the HTML content to the iframe
+      iframe.contentWindow.document.open();
+      iframe.contentWindow.document.write(html);
+      iframe.contentWindow.document.close();
+    }
+    
+    // Cleanup function
+    return () => {
+      if (iframeRef.current) {
+        iframeRef.current.innerHTML = '';
+      }
+    };
+  }, [gistId, file]);
+
+  return <div ref={iframeRef} className="w-full h-full overflow-hidden relative"></div>;
+};
 
 const Network = () => {
   return (
@@ -25,17 +83,9 @@ const Network = () => {
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
-            className="h-[400px] relative rounded-lg shadow-xl overflow-hidden bg-gray-900"
+            className="h-[500px] relative rounded-lg overflow-hidden"
           >
-            {/* Background Map Image */}
-            <img 
-              src="/map.png"
-              alt="Southeast Asia Map"
-              className="absolute inset-0 w-full h-full object-cover opacity-80"
-            />
-            
-            {/* Overlay gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-gray-900/50 to-transparent" />
+            <GistEmbed gistId="dhoboy/ff8448ace9d5d567390a" file="index.html" />
           </motion.div>
         </div>
       </div>
