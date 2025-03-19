@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { useSupabase } from '@/lib/supabase-context';
+import { useAuth } from '@/lib/auth';
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState('');
@@ -11,10 +11,14 @@ export default function AdminLoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { auth } = useSupabase();
+  const { login, isAuthenticated } = useAuth();
+
+  // Hardcoded credentials
+  const ADMIN_EMAIL = "admin@asiantrade.com";
+  const ADMIN_PASSWORD = "admin123";
 
   // Redirect if already authenticated
-  if (auth.isAuthenticated) {
+  if (isAuthenticated && isAuthenticated()) {
     navigate('/admin');
     return null;
   }
@@ -24,16 +28,22 @@ export default function AdminLoginPage() {
     setIsLoading(true);
 
     try {
-      const { success, error } = await auth.signInWithEmail(email, password);
-      
-      if (success) {
-        toast({
-          title: "Success",
-          description: "Logged in successfully",
-        });
-        navigate('/admin');
+      // Check if email matches hardcoded email
+      if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+        // Use the existing login function which only checks password
+        const success = login(password);
+        
+        if (success) {
+          toast({
+            title: "Success",
+            description: "Logged in successfully",
+          });
+          navigate('/admin');
+        } else {
+          throw new Error("Invalid credentials");
+        }
       } else {
-        throw new Error(error);
+        throw new Error("Invalid credentials");
       }
     } catch (error: any) {
       toast({

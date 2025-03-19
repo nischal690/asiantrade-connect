@@ -169,6 +169,9 @@ const Navbar = () => {
               <NavLink to="/services" hasDropdown>Our Services</NavLink>
             </motion.div>
             <motion.div variants={itemVariants}>
+              <NavLink to="/blog">Blog</NavLink>
+            </motion.div>
+            <motion.div variants={itemVariants}>
               <NavLink to="/news">News</NavLink>
             </motion.div>
             <motion.div variants={itemVariants}>
@@ -204,6 +207,7 @@ const Navbar = () => {
                 { to: "/about", label: "About Us", hasDropdown: true },
                 { to: "/our-brands", label: "Our Brands" },
                 { to: "/services", label: "Our Services", hasDropdown: true },
+                { to: "/blog", label: "Blog" },
                 { to: "/news", label: "News" },
                 { to: "/contact", label: "Contact" },
               ].map((link, i) => (

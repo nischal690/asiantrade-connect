@@ -33,7 +33,7 @@ const Footer = () => {
           <motion.div variants={itemVariants} className="space-y-4">
             <h3 className="text-lg font-heading font-semibold">Asian Trade Connect</h3>
             <p className="text-sm text-muted-foreground">
-              Connecting luxury brands with Asian markets since 1954.
+              Connecting luxury brands with Asian markets .
             </p>
           </motion.div>
 
@@ -41,10 +41,12 @@ const Footer = () => {
           <motion.div variants={itemVariants} className="space-y-4">
             <h3 className="text-lg font-heading font-semibold">Contact Us</h3>
             <div className="space-y-2 text-sm text-muted-foreground">
-              <p>123 Business Avenue</p>
-              <p>Singapore, 123456</p>
-              <p>Phone: +65 6789 0123</p>
-              <p>Email: contact@asiantrade.com</p>
+              <p>Milan, Italy</p>
+              <p>Paris, France</p>
+              <p>Bangkok, Thailand</p>
+              <p>Hong Kong</p>
+              <p>Phone: +393513690022</p>
+              <p>Email: contact@asiantradeconnect.com</p>
             </div>
           </motion.div>
 

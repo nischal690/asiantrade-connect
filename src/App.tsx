@@ -17,6 +17,8 @@ import AdminLoginPage from "./pages/AdminLoginPage";
 import SitemapPage from "./pages/SitemapPage";
 import OurBrandsPage from "./pages/OurBrandsPage";
 import StorageManagementPage from "./pages/StorageManagementPage";
+import BlogPage from "./pages/BlogPage";
+import BlogPostPage from "./pages/BlogPostPage";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +39,8 @@ const App = () => (
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<Terms />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:id" element={<BlogPostPage />} />
             <Route path="/admin/login" element={<AdminLoginPage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/admin/storage" element={<StorageManagementPage />} />

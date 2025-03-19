@@ -13,13 +13,35 @@ export class SupabaseStorageService {
     file: File,
     options?: { upsert?: boolean }
   ): Promise<{ data: any; error: any }> {
-    const { data, error } = await supabase.storage
-      .from(this.bucket)
-      .upload(path, file, {
-        upsert: options?.upsert || false,
-      });
+    // Check if user is authenticated as admin (using our simple auth)
+    const isAdmin = sessionStorage.getItem('isAdmin') === 'true';
+    
+    // If not admin, return an error
+    if (!isAdmin) {
+      return { 
+        data: null, 
+        error: { message: 'Unauthorized: Only admins can upload files' } 
+      };
+    }
 
-    return { data, error };
+    try {
+      const { data, error } = await supabase.storage
+        .from(this.bucket)
+        .upload(path, file, {
+          upsert: options?.upsert || false,
+          // Add content type for better handling in browsers
+          contentType: file.type
+        });
+
+      if (error) {
+        console.error('Supabase storage upload error:', error);
+      }
+
+      return { data, error };
+    } catch (e) {
+      console.error('Exception during file upload:', e);
+      return { data: null, error: e };
+    }
   }
 
   // Download file
@@ -51,10 +73,27 @@ export class SupabaseStorageService {
 
   // Delete file
   async deleteFile(path: string): Promise<{ error: any }> {
-    const { error } = await supabase.storage
-      .from(this.bucket)
-      .remove([path]);
+    // Check if user is authenticated as admin
+    const isAdmin = sessionStorage.getItem('isAdmin') === 'true';
+    
+    // If not admin, return an error
+    if (!isAdmin) {
+      return { error: { message: 'Unauthorized: Only admins can delete files' } };
+    }
 
-    return { error };
+    try {
+      const { error } = await supabase.storage
+        .from(this.bucket)
+        .remove([path]);
+
+      if (error) {
+        console.error('Supabase storage delete error:', error);
+      }
+
+      return { error };
+    } catch (e) {
+      console.error('Exception during file deletion:', e);
+      return { error: e };
+    }
   }
 }

@@ -18,7 +18,7 @@ export function useAuthCheck() {
 export function useAuth() {
   const navigate = useNavigate();
 
-  const login = (password: string) => {
+  const login = (password: string): boolean => {
     if (password === "admin123") {
       sessionStorage.setItem('isAdmin', 'true');
       navigate('/admin');
@@ -27,10 +27,14 @@ export function useAuth() {
     return false;
   };
 
-  const logout = () => {
+  const logout = (): void => {
     sessionStorage.removeItem('isAdmin');
     navigate('/admin/login');
   };
 
-  return { login, logout };
+  const isAuthenticated = (): boolean => {
+    return sessionStorage.getItem('isAdmin') === 'true';
+  };
+
+  return { login, logout, isAuthenticated };
 }

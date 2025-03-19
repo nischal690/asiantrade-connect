@@ -11,6 +11,7 @@ const Careers = lazy(() => import("@/components/Careers"));
 const Footer = lazy(() => import("@/components/Footer"));
 const BrandGrowth = lazy(() => import("@/components/BrandGrowth"));
 const Testimonials = lazy(() => import("@/components/Testimonials"));
+const LatestBlogPosts = lazy(() => import("@/components/LatestBlogPosts").then(module => ({ default: module.LatestBlogPosts })));
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Play, ChevronDown } from "lucide-react";
 import { getHomepageContent } from "@/lib/api/homepage";
@@ -315,6 +316,10 @@ const Index = () => {
       
       <Suspense fallback={<LoadingSpinner />}>
         <Testimonials />
+      </Suspense>
+      
+      <Suspense fallback={<LoadingSpinner />}>
+        <LatestBlogPosts />
       </Suspense>
       
       <Suspense fallback={<LoadingSpinner />}>

@@ -147,7 +147,18 @@ const ContactPage = () => {
                   <Phone className="h-6 w-6 text-secondary" />
                   <div>
                     <h3 className="font-heading font-semibold">Call Us</h3>
-                    <p className="text-muted-foreground">+393454293347</p>
+                    <p className="text-muted-foreground">+393513690022</p>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  className="flex items-start space-x-4 p-6 rounded-xl bg-white/5 backdrop-blur-sm border border-white/10"
+                >
+                  <Mail className="h-6 w-6 text-accent" />
+                  <div>
+                    <h3 className="font-heading font-semibold">Email Us</h3>
+                    <p className="text-muted-foreground">contact@asiantradeconnect.com</p>
                   </div>
                 </motion.div>
               </div>

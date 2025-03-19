@@ -47,7 +47,7 @@ const About = () => {
                 <div className="relative h-80">
                   <img
                     src="/giovanni.png"
-                    alt="Giovanni Feo"
+                    alt="GIovanni Feo"
                     className="w-full h-full object-cover object-top"
                   />
                 </div>
